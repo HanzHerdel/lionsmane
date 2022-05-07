@@ -20,7 +20,7 @@ export function RaceDetail() {
   const [open, setOpen] = useState(false);
 
   const dispatch = useAppDispatch();
-  const [selectedrace, setSelectedRace] = useState<string | null>(null);
+  const [selectedSubRace, setSelectedSubRace] = useState<string | undefined>();
 
   const { race } = useParams();
   const subRaceList = useAppSelector(selectRace(race || ""));
@@ -51,7 +51,7 @@ export function RaceDetail() {
         <Header title={race} />
         <RaceList
           handleClick={(race: string): void => {
-            setSelectedRace(race);
+            setSelectedSubRace(race);
             setOpen(true);
           }}
           racesArray={subRaceList}
@@ -60,7 +60,8 @@ export function RaceDetail() {
       </Grid>
       <ModalRace
         open={open}
-        race={selectedrace}
+        race={race}
+        subRace={selectedSubRace}
         closeModal={() => {
           setOpen(false);
         }}
