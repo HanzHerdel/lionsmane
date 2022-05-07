@@ -3,7 +3,7 @@ import counterReducer from './slices/razesSlice';
 
 export const store = configureStore({
   reducer: {
-    counter: counterReducer,
+    races: counterReducer,
   },
 });
 

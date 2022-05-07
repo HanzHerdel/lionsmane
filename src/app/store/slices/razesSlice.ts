@@ -4,17 +4,20 @@ import { fetchRazes } from './razesApi';
 import { IRazas } from '../../domain/interfaces';
 
 
-const SLICE_NAME:string='counter'
+const SLICE_NAME:string='races'
 
+export enum EStatus {idle='idle',loading='loading', failed='failed'}
 export interface RacesState {
-  razas: IRazas;
-  status: 'idle' | 'loading' | 'failed';
+  races: IRazas;
+  status:   EStatus.idle | EStatus.loading | EStatus.failed;
   favorite:string|null
 }
 
+
+
 const initialState: RacesState = {
-  razas: {},
-  status:'idle',
+  races: {},
+  status:EStatus.idle,
   favorite: null,
 };
 
@@ -39,7 +42,7 @@ export const razasSlice = createSlice({
   reducers: {
     // Use the PayloadAction type to declare the contents of `action.payload`
     setRazas: (state, action: PayloadAction<IRazas>) => {
-      state.razas = action.payload;
+      state.races = action.payload;
     },
     setFavorite: (state, action:PayloadAction<string>) => {
       state.favorite = action.payload;
@@ -48,14 +51,14 @@ export const razasSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(getRaces.pending, (state) => {
-        state.status = 'loading';
+        state.status = EStatus.loading;
       })
       .addCase(getRaces.fulfilled, (state, action) => {
-        state.status = 'idle';
-        state.razas = action.payload;
+        state.status = EStatus.idle;
+        state.races = action.payload;
       })
       .addCase(getRaces.rejected, (state) => {
-        state.status = 'failed';
+        state.status = EStatus.failed;
       });
   },
 });
@@ -64,9 +67,14 @@ export const {setRazas,setFavorite} = razasSlice.actions;
 
 /**** SELECTIORS ****/
 
-export const selectAllRaces = (state: RootState) => state.counter.razas;
+export const selectAllRaces = (state: RootState):IRazas => state.races.races;
 
-export const selectRace =
+export const selectStatus = (state: RootState):string => state.races.status
+
+export const selectRace =(race:string)=> (state: RootState):string => state.races.races[race]
+
+
+export const setFavoriteRace =
   (race: string): AppThunk =>
   (dispatch, getState) => {
     const races = selectAllRaces(getState());

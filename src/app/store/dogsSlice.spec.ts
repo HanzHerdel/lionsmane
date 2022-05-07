@@ -1,10 +1,11 @@
 import racesSplice, {RacesState } from './slices/razesSlice';
+import { EStatus } from './slices/razesSlice';
 
 
 describe('counter reducer', () => {
   const initialState: RacesState = {
-    razas: {},
-    status:'idle',
+    races: {},
+    status:EStatus.idle,
     favorite: null,
   };
   it('should handle initial state', () => {

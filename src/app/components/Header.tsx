@@ -10,16 +10,13 @@ interface IHeader {
 export function Header({title='Dog Races Window'}:IHeader) {
 
 return (
-<Grid container spacing={2}>
   <Grid item xs={12} >
     <Box mt={2}>
-
     <Typography variant="h2" component="h2" textAlign={'center'}>
       {title}
     </Typography>
     </Box>
     <Divider/>
   </Grid>
-</Grid>
   );
 }
