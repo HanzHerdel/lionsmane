@@ -46,7 +46,7 @@ export function RaceList({
                     src={avatars[race]}
                   />
                 )}
-                <Typography variant="h4" component="h2" textAlign={"center"}>
+                <Typography variant="h5" component="h2" textAlign={"center"}>
                   {race}
                 </Typography>
               </ListItem>

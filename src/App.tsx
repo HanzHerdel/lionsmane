@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { Main } from "./app/components/Main";
 import { useAppDispatch, useAppSelector } from "./app/store/hooks";
-import { getRaces, selectStatus, EStatus } from "./app/store/slices/razesSlice";
+import { getRaces, selectStatus, EStatus } from './app/store/slices/razesSlice';
 
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { RaceDetail } from "./app/components/RaceDetail";
@@ -11,6 +11,7 @@ function App() {
   const dispatch = useAppDispatch();
 
   const status = useAppSelector(selectStatus);
+  
   /*** EFFECTS ****/
   useEffect(() => {
     dispatch(getRaces());

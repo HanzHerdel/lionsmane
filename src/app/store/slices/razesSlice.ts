@@ -1,30 +1,36 @@
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { RootState, /*AppThunk*/ } from '../store';
-import { fetchPictures, fetchRazes } from './razesApi';
-import { IRazas, DinamicObject } from '../../domain/interfaces';
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { RootState /*AppThunk*/ } from "../store";
+import { fetchPictures, fetchRazes } from "./razesApi";
+import { IRazas, DinamicObject } from "../../domain/interfaces";
 
+const SLICE_NAME: string = "races";
 
-const SLICE_NAME:string='races'
-
-export enum EStatus {idle='idle',loading='loading', failed='failed'}
-export interface RacesState {
-  races: IRazas;
-  avatarRaces:DinamicObject,
-  status:   EStatus.idle | EStatus.loading | EStatus.failed;
-  statusAvatars:   EStatus.idle | EStatus.loading | EStatus.failed;
-  favorite:string|null
+export enum EStatus {
+  idle = "idle",
+  loading = "loading",
+  failed = "failed",
 }
 
-
+export interface Ifavorite {
+  race: string;
+  image: string;
+  subRace:string;
+}
+export interface RacesState {
+  races: IRazas;
+  avatarRaces: DinamicObject;
+  status: EStatus.idle | EStatus.loading | EStatus.failed;
+  statusAvatars: EStatus.idle | EStatus.loading | EStatus.failed;
+  favorite: Ifavorite | null;
+}
 
 const initialState: RacesState = {
   races: {},
-  avatarRaces:{},
-  status:EStatus.idle,
-  statusAvatars:EStatus.idle,
+  avatarRaces: {},
+  status: EStatus.idle,
+  statusAvatars: EStatus.idle,
   favorite: null,
 };
-
 
 export const getRaces = createAsyncThunk(
   `${SLICE_NAME}/fetchRace`,
@@ -34,14 +40,13 @@ export const getRaces = createAsyncThunk(
   }
 );
 
-
 export const getAvatarRaces = createAsyncThunk(
   `${SLICE_NAME}/fetchAvatarRace`,
-  async (urls:DinamicObject) => {
+  async (urls: DinamicObject) => {
     const mappedUrl = await fetchPictures(urls);
     return mappedUrl;
   }
-); 
+);
 
 export const razasSlice = createSlice({
   name: SLICE_NAME,
@@ -55,12 +60,12 @@ export const razasSlice = createSlice({
     setAvatarRaces: (state, action: PayloadAction<DinamicObject>) => {
       state.avatarRaces = action.payload;
     },
-    setFavorite: (state, action:PayloadAction<string>) => {
+    setFavorite: (state, action: PayloadAction<Ifavorite>) => {
       state.favorite = action.payload;
     },
-    clearAvatars:(state)=>{
-      state.avatarRaces={}
-    }
+    clearAvatars: (state) => {
+      state.avatarRaces = {};
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -87,16 +92,26 @@ export const razasSlice = createSlice({
   },
 });
 
-export const {setRazas, setFavorite, setAvatarRaces, clearAvatars} = razasSlice.actions;
+export const { setRazas, setFavorite, setAvatarRaces, clearAvatars } =
+  razasSlice.actions;
 
 /**** SELECTIORS ****/
 
-export const selectAllRaces = (state: RootState):IRazas => state.races.races;
+export const selectAllRaces = (state: RootState): IRazas => state.races.races;
 
-export const selectStatus = (state: RootState):string => state.races.status
+export const selectStatus = (state: RootState): string => state.races.status;
 
-export const selectRace =(race:string)=> (state: RootState):string[] => state.races.races[race]
+export const selectFavorite = (state: RootState): Ifavorite | null =>
+  state.races.favorite;
 
-export const selectAvatarRaces =()=> (state: RootState):DinamicObject => state.races.avatarRaces
+export const selectRace =
+  (race: string) =>
+  (state: RootState): string[] =>
+    state.races.races[race];
+
+export const selectAvatarRaces =
+  () =>
+  (state: RootState): DinamicObject =>
+    state.races.avatarRaces;
 
 export default razasSlice.reducer;
