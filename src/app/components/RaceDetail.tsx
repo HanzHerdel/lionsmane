@@ -7,6 +7,7 @@ import { useAppSelector } from "../store/hooks";
 export function RaceDetail() {
   const params = useParams();
   const raceList = useAppSelector(selectRace(params.race || ""));
+  console.log('raceList: ', raceList);
   return (
     <Grid item xs={12}>
       <Header title={params.race} />
