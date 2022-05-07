@@ -1,12 +1,26 @@
-import { Box, Button, Grid, Typography } from "@mui/material";
+import {
+  Avatar,
+  Button,
+  Divider,
+  Grid,
+  List,
+  ListItem,
+  Typography,
+} from "@mui/material";
+import { Fragment } from "react";
+import { DinamicObject } from "../domain/interfaces";
 
 interface IRaceList {
-    racesArray?: Array<string>;
-    handleClick: Function
+  racesArray?: Array<string>;
+  handleClick: Function;
+  avatars?: DinamicObject | null;
 }
 
-
-export function RaceList({racesArray=[], handleClick=()=>{}}:IRaceList) {
+export function RaceList({
+  racesArray = [],
+  handleClick = () => {},
+  avatars = null,
+}: IRaceList) {
   return (
     <Grid
       container
@@ -14,17 +28,35 @@ export function RaceList({racesArray=[], handleClick=()=>{}}:IRaceList) {
       justifyContent="center"
       alignItems="center"
     >
-      {racesArray.length
-        ? racesArray.map((race, idx) => (
-            <Box mt={1} key={idx}>
-              <Button onClick={()=>handleClick(race)}>
+      {racesArray.length ? (
+        <List
+          sx={{
+            width: "100%",
+            bgcolor: "background.paper",
+            marginLeft: "2vh",
+          }}
+        >
+          {racesArray.map((race, idx) => (
+            <Fragment key={idx}>
+              <ListItem onClick={() => handleClick(race)} component={Button}>
+                {avatars && (
+                  <Avatar
+                    sx={{ marginRight: "8px" }}
+                    alt="race"
+                    src={avatars[race]}
+                  />
+                )}
                 <Typography variant="h4" component="h2" textAlign={"center"}>
                   {race}
                 </Typography>
-              </Button>
-            </Box>
-          ))
-        : "No Races"}
+              </ListItem>
+              <Divider />
+            </Fragment>
+          ))}
+        </List>
+      ) : (
+        "No Races"
+      )}
     </Grid>
   );
 }

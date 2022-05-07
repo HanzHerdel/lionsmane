@@ -7,6 +7,8 @@ describe('counter reducer', () => {
     races: {},
     status:EStatus.idle,
     favorite: null,
+    avatarRaces:{},
+    statusAvatars:EStatus.idle,
   };
   it('should handle initial state', () => {
     expect(racesSplice(undefined, { type: 'unknown' })).toEqual(initialState);
